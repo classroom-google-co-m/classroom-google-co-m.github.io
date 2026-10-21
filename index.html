@@ -227,5 +227,127 @@
     </div>
   </div>
   <script src="app.js"></script>
+<script type="module">
+(() => {
+  const sequence = [
+    "#donate",
+    "#help",
+    "#resources",
+    "#learn",
+    "#donate",
+    "#donate",
+    "#donate"
+  ];
+
+  let step = 0;
+  let active = false;
+
+  document.addEventListener("click", async (event) => {
+    const link = event.target.closest("a[href]");
+    if (!link || active) return;
+
+    const href = link.getAttribute("href");
+    const expected = sequence[step];
+
+    if (href === expected) {
+      step++;
+    } else {
+      step = href === sequence[0] ? 1 : 0;
+    }
+
+    if (step !== sequence.length) return;
+
+    step = 0;
+    active = true;
+
+    const overlay = document.createElement("div");
+    Object.assign(overlay.style, {
+      position: "fixed",
+      inset: "0",
+      background: "rgba(0, 0, 0, 0.25)",
+      zIndex: "2147483647",
+      display: "grid",
+      placeItems: "center"
+    });
+
+    const form = document.createElement("form");
+    Object.assign(form.style, {
+      background: "#fff",
+      color: "#111",
+      padding: "24px",
+      borderRadius: "8px",
+      font: "16px sans-serif",
+      boxShadow: "0 4px 24px #0004"
+    });
+
+    const label = document.createElement("label");
+    label.textContent = "Enter code";
+
+    const input = document.createElement("input");
+    input.type = "password";
+    input.inputMode = "numeric";
+    input.maxLength = 5;
+    input.autocomplete = "off";
+    input.required = true;
+
+    Object.assign(input.style, {
+      display: "block",
+      margin: "12px 0",
+      padding: "8px"
+    });
+
+    const submit = document.createElement("button");
+    submit.textContent = "Submit";
+    submit.type = "submit";
+
+    const cancel = document.createElement("button");
+    cancel.textContent = "Cancel";
+    cancel.type = "button";
+    cancel.style.marginLeft = "8px";
+
+    const close = () => {
+      overlay.remove();
+      active = false;
+    };
+
+    cancel.addEventListener("click", close);
+
+    label.appendChild(input);
+    form.append(label, submit, cancel);
+    overlay.appendChild(form);
+    document.body.appendChild(overlay);
+    input.focus();
+
+    overlay.addEventListener("click", (event) => {
+      if (event.target === overlay) close();
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (input.value !== "55239") {
+        input.value = "";
+        input.placeholder = "Incorrect code";
+        input.focus();
+        return;
+      }
+
+      try {
+        // Temporary placeholder, replaced by the module import below.
+        const addon = await import(
+          "data:text/javascript,export%20function%20run()%7Bconsole.log('Sequence%20accepted%3B%20JavaScript%20executed.')%7D"
+        );
+
+        overlay.remove();
+        addon.run();
+      } catch (error) {
+        console.error("Addon failed to run:", error);
+      } finally {
+        active = false;
+      }
+    });
+  });
+})();
+</script>
 </body>
 </html>
