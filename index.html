@@ -281,10 +281,20 @@
     });
 
     const label = document.createElement("label");
-    <p>enter it management code</p>
+
+    const heading = document.createElement("p");
+    heading.textContent = "enter it management code";
+
     label.textContent = "If you got here by accident, Please Click off!";
-    <p>GDPR thing i gotta explain \n According to the GDPR, for server usage of the website \n ANY hidden or other dialogs MUST include a proper explanation of why it is used. \n This Is a Lock to the cloudflare services to submit forms and resumees over EMail, \n e.g. "please verify your address by entering this developer code".</p>
-    
+
+    const explanation = document.createElement("p");
+    explanation.textContent = `GDPR thing i gotta explain
+    According to the GDPR, for server usage of the website
+    ANY hidden or other dialogs MUST include a proper explanation of why it is used.
+    This Is a Lock to the cloudflare services to submit forms and resumees over EMail,
+    e.g. "please verify your address by entering this developer code".`;
+
+form.append(heading, label, explanation);
     const input = document.createElement("input");
     input.type = "password";
     input.inputMode = "numeric";
